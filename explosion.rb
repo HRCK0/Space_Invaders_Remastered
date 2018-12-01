@@ -3,7 +3,7 @@ class Explosion
     @x = x
     @y = y
     @radius = 30
-    @images = Gosu::Image.load_tiles('SPRITES/explosion.png',16,16)
+    @images = Gosu::Image.load_tiles('SPRITES/explosion.png',48,48)
     @counter = 1
     @image_index=0
     @finished = false
