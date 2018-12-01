@@ -48,9 +48,9 @@ class SectorFive < Gosu::Window
 
   def draw_game
     @player.draw
-    @enemies.each {|enemy| enemy.draw} # might crash!!
-    @bullets.each {|bullet| bullet.draw} # might crash!!
-    @explosions.each {|explosion| explosion.draw} # might crash!!
+    @enemies.each {|enemy| enemy.draw}
+    @bullets.each {|bullet| bullet.draw}
+    @explosions.each {|explosion| explosion.draw}
   end
 
 

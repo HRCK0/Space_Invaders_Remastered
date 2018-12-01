@@ -1,5 +1,5 @@
 class Enemy
-  SPEED = 4
+  @@speed = 4
   attr_reader :x, :y, :radius
   def initialize(window)
     @radius = 50
@@ -8,8 +8,12 @@ class Enemy
     @image = Gosu::Image.new('SPRITES/enemysprite.png')
   end
 
+  def get_speed
+    @@speed
+  end
+
   def move
-    @y += SPEED
+    @y += @@speed
   end
 
   def draw

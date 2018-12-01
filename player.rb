@@ -15,6 +15,17 @@ class Player
     @fuel = 100
   end
 
+  def decrease_fuel
+    @fuel -= 0.01
+  end
+
+  def reset_fuel
+    @fuel = 100
+  end
+
+  def get_fuel
+    @fuel
+  end
 
   def draw
     @image.draw_rot(@x, @y, 1, angle)
