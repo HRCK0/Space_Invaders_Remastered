@@ -20,6 +20,7 @@ class SectorFive < Gosu::Window
     @scene = :start
     @start_music = Gosu::Song.new('MUSIC/homepage-music.mp3')
     @start_music.play(true)
+    @game_timer = 1
   end
 
   def initialize_game
@@ -43,7 +44,7 @@ class SectorFive < Gosu::Window
     @lives3 = Gosu::Image.new('SPRITES/lives3.png', tileable: true)
     @font = Gosu::Font.new(100)
     @fuels = []
-    @game_timer = 0
+    @game_timer = 1
   end
 
   def initialize_end
@@ -106,6 +107,10 @@ class SectorFive < Gosu::Window
 
   def  button_down_end(id)
     if id == Gosu::KbP
+      @game_timer = 1
+      @enemies.each do |enemy|
+        enemy.reset_speed
+      end
       initialize
       elsif id == Gosu::KbQ
         close!
@@ -113,6 +118,7 @@ class SectorFive < Gosu::Window
   end
 
   def update_game
+
 
     # Checks if end-game conditions have been met
     if @lives == 0 or @player.get_fuel <= 0
@@ -201,6 +207,7 @@ class SectorFive < Gosu::Window
       @enemies.each do |enemy|
         enemy.speed_up
       end
+      @game_timer = 1
     end
   end
 
