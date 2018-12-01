@@ -19,9 +19,9 @@ pt.print_point
 pt.move(-2, 7)
 pt.print_point
 
-
-name_ali_ali = gets.to_i
-puts "Vida is #{name_ali_ali} years old"
+puts "Input the age of 'person'"
+var_name = gets.to_i
+puts "Vida is #{var_name} years old"
 
 for i in 1..10
   puts i
@@ -32,7 +32,7 @@ def func_name(number)
     return 0
   end
   puts number
-  return func_name(number-1)
+  func_name(number-1)
 end
 
 func_name(10)
