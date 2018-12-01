@@ -19,7 +19,7 @@ pt.print_point
 pt.move(-2, 7)
 pt.print_point
 
-
+puts "Input the age of 'person'"
 name_ali_ali = gets.chomp.to_i
 puts "Vida is #{name_ali_ali} years old"
 
