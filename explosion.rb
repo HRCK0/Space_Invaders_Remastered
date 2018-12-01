@@ -8,6 +8,7 @@ class Explosion
     @image_index=0
     @finished = false
   end
+
   def draw
     if @image_index < @images.count
       @images[@image_index].draw(@x-@radius,@y-@radius,2)
@@ -24,8 +25,8 @@ class Explosion
 
   end
 
-  def getfinished
-    return @finished
+  def get_finished
+    @finished
   end
 
 end

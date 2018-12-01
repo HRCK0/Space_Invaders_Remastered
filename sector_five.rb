@@ -24,10 +24,7 @@ class SectorFive < Gosu::Window
   end
 
   def update
-    if @lives == 0
-      close!
-    end
-
+    close! if @lives == 0
     @player.turn_left if button_down?(Gosu::KbLeft)
     @player.turn_right if button_down?(Gosu::KbRight)
     @player.accelerate if button_down?(Gosu::KbUp)
@@ -59,7 +56,7 @@ class SectorFive < Gosu::Window
       end
     end
     @explosions.dup.each do |explosion|
-      @explosions.delete explosion if explosion.getfinished()
+      @explosions.delete explosion if explosion.get_finished
     end
     @enemies.dup.each do |enemy|
       if enemy.y > HEIGHT + enemy.radius
