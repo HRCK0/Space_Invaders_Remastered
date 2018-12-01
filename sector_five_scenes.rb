@@ -4,12 +4,14 @@ require_relative 'enemy'
 require_relative 'bullet'
 require_relative 'explosion'
 require_relative 'fuel'
+require_relative 'nuke'
 
 class SectorFive < Gosu::Window
   WIDTH = 1920
   HEIGHT = 1080
   ENEMY_FREQUENCY = 0.08
   FUEL_FREQUENCY = 0.002
+  NUKE_FREQUENCY = 0.002
   red_screen = Gosu::Color::RED
   game_timer = 0
 
@@ -29,6 +31,7 @@ class SectorFive < Gosu::Window
     @enemies = []
     @bullets = []
     @explosions = []
+    @nukes = []
     @scene = :game
     @background = Gosu::Image.new('SPRITES/bg2.png', tileable: true)
     @score = 0
@@ -139,11 +142,13 @@ class SectorFive < Gosu::Window
     # Adds enemies and fuels
     @enemies.push Enemy.new(self) if rand < ENEMY_FREQUENCY
     @fuels.push Fuel.new(self) if rand < FUEL_FREQUENCY
+    @nukes.push Nuke.new(self) if rand < NUKE_FREQUENCY
 
     # Moves enemies, bullets and fuel
     @enemies.each {|enemy| enemy.move}
     @bullets.each {|bullet| bullet.move}
     @fuels.each {|fuel| fuel.move}
+    @nukes.each {|nuke| nuke.move}
 
     # Checking if enemies have b  een hit by the bullet
     @enemies.dup.each do |enemy|
@@ -186,6 +191,17 @@ class SectorFive < Gosu::Window
         @fuels.delete fuel
       end
     end
+
+     @nukes.dup.each do |nuke|
+        distance = Gosu::distance(@player.x, @player.y, nuke.x, nuke.y)
+        if distance < nuke.radius + @player.radius
+          @nukes.delete nuke
+          @enemies.dup.each do |enemy|
+            @explosions.push Explosion.new(self, enemy.x, enemy.y)
+            @enemies.delete enemy
+          end
+        end
+      end
 
     # Ends explosion effect
     @explosions.dup.each do |explosion|
@@ -232,6 +248,7 @@ class SectorFive < Gosu::Window
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
     @fuels.each {|fuel| fuel.draw}
+    @nukes.each {|nuke| nuke.draw}
 
     # Fuel bar display
     draw_quad(20, 1000, @black_colour, 220, 1000, @black_colour, 20, 1025, @black_colour, 220, 1025, @black_colour)
