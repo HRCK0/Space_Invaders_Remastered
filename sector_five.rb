@@ -1,14 +1,16 @@
 require 'gosu'
 require_relative 'player'
 require_relative 'enemy'
-require_relative 'bullet'
-require_relative 'explosion'
 
 class SectorFive < Gosu::Window
+  WIDTH = 800
+  HEIGHT = 600
+
   def initialize
-    super(800, 600)
+    super(WIDTH, HEIGHT)
     self.caption = 'Space Invaders - Remastered (404 Games)'
     @player = Player.new(self)
+    @enemy = Enemy.new(self)
   end
 
   def update
@@ -16,6 +18,12 @@ class SectorFive < Gosu::Window
     @player.turn_right if button_down?(Gosu::KbRight)
     @player.accelerate if button_down?(Gosu::KbUp)
     @player.move
+    @enemy.move
+  end
+
+  def draw
+    @player.draw
+    @enemy.draw
   end
 
 end
