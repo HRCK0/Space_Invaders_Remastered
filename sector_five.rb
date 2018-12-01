@@ -142,7 +142,7 @@ class SectorFive < Gosu::Window
     draw_quad(20, 1000, @red_screen, 2*@player.get_fuel+20, 1000, @red_screen, 20, 1025, @red_screen, 2*@player.get_fuel+20, 1025, @red_screen)
 
     # Game Over Message
-    @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0 or @player.get_fuel <= 0
+    @font_lost.draw("GAME OVER!", 450, 500, 2) if @lives == 0 or @player.get_fuel <= 0
 
     # Red splash screen upon player getting hit
     if @rs_display and @lives != 0
