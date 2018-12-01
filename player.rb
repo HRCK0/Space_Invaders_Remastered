@@ -1,6 +1,6 @@
 class Player
-  ROTATION_SPEED = 6
-  ACCELERATION = 1
+  ROTATION_SPEED = 4
+  ACCELERATION = 0.6
   FRICTION = 0.9
   attr_reader :x, :y, :angle, :radius
   def initialize(window)
@@ -44,9 +44,13 @@ class Player
       @velocity_x = 0
       @x = @radius
     end
-    if @y > @window.height - radius
+    if @y > @window.height - @radius
       @velocity_y = 0
       @y = @window.height - @radius
+    end
+    if @y < @radius
+      @velocity_y = 0
+      @y = radius
     end
   end
 end
