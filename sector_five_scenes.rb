@@ -44,6 +44,7 @@ class SectorFive < Gosu::Window
     @font = Gosu::Font.new(100)
     @font_lost = Gosu::Font.new(200)
     @fuels = []
+    @game_timer = 0
   end
 
   def draw
@@ -93,6 +94,7 @@ class SectorFive < Gosu::Window
       close!
     end
 
+    @game_timer += 1
     # Takes player input
     @player.turn_left if button_down?(Gosu::KbLeft)
     @player.turn_right if button_down?(Gosu::KbRight)
@@ -161,7 +163,13 @@ class SectorFive < Gosu::Window
     @bullets.dup.each do |bullet|
       @bullets.delete bullet unless bullet.onscreen?
     end
+
+    if @game_timer%930==0
+      @enemies.each do |enemy|
+        enemy.speed_up
+      end
     end
+  end
 
   def draw_game
     # Displays lives and score
