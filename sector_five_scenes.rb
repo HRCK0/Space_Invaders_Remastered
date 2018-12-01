@@ -45,6 +45,7 @@ class SectorFive < Gosu::Window
     @font = Gosu::Font.new(100)
     @fuels = []
     @game_timer = 1
+    @count = 0
   end
 
   def initialize_end
@@ -203,11 +204,17 @@ class SectorFive < Gosu::Window
       @bullets.delete bullet unless bullet.onscreen?
     end
 
+
     if @game_timer%930==0
       @enemies.each do |enemy|
         enemy.speed_up
       end
       @game_timer = 1
+      @count += 1
+      if @count > 3
+        enemy.reset_speed
+        @count = 0
+      end
     end
   end
 
@@ -228,9 +235,9 @@ class SectorFive < Gosu::Window
 
     # Fuel bar display
     draw_quad(20, 1000, @black_colour, 220, 1000, @black_colour, 20, 1025, @black_colour, 220, 1025, @black_colour)
-    draw_quad(20, 1000, @red_screen, 2*@player.get_fuel+20, 1000, @red_screen, 20, 1025, @red_screen, 2*@player.get_fuel+20, 1025, @red_screen)
+    draw_quad(20, 1000, @red_screen, 2*@player.get_fuel+20, 1000, @red_screen, 20, 1025,
+              @red_screen, 2*@player.get_fuel+20, 1025, @red_screen)
 
-    # Game Over Message
 
     # Red splash screen upon player getting hit
     if @rs_display and @lives != 0
