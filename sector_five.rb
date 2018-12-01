@@ -2,7 +2,7 @@ require 'gosu'
 require_relative 'player'
 require_relative 'enemy'
 require_relative 'bullet'
-require_relative 'explosions'
+require_relative 'explosion'
 require_relative 'credit'
 
 class SectorFive < Gosu::Window
@@ -28,7 +28,7 @@ class SectorFive < Gosu::Window
     @enemies.push Enemy.new(self) if rand < ENEMY_FREQUENCY
 
     @enemies.each {|enemy| enemy.move} # might crash!!
-    @bullet.each {|bullet| bullet.move}
+    @bullets.each {|bullet| bullet.move}
 
     @enemies.dup.each do |enemy|
       @bullets.dup.each do |bullet|
@@ -55,7 +55,7 @@ class SectorFive < Gosu::Window
 
   def button_down(id)
     if id == Gosu::KbSpace
-      @bullets.push Bullet.new(self, @player.x, @Player.y, @player_angle)
+      @bullets.push Bullet.new(self, @player.x, @player.y, @player_angle)
     end
   end
 
