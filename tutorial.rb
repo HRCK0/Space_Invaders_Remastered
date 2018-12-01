@@ -20,8 +20,8 @@ pt.move(-2, 7)
 pt.print_point
 
 puts "Input the age of 'person'"
-name_ali_ali = gets.chomp.to_i
-puts "Vida is #{name_ali_ali} years old"
+var_name = gets.to_i
+puts "Vida is #{var_name} years old"
 
 for i in 1..10
   puts i
