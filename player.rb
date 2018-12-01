@@ -1,11 +1,11 @@
 class Player
-  ROTATION_SPEED = 4
-  ACCELERATION = 0.6
+  ROTATION_SPEED = 5.5
+  ACCELERATION = 0.8
   FRICTION = 0.9
   attr_reader :x, :y, :angle, :radius
   def initialize(window)
-    @x = 200
-    @y = 200
+    @x = 910
+    @y = 900
     @angle = 0
     @image = Gosu::Image.new('SPRITES/player.png')
     @velocity_x = 0

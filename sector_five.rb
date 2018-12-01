@@ -8,7 +8,7 @@ require_relative 'credit'
 class SectorFive < Gosu::Window
   WIDTH = 1920
   HEIGHT = 1080
-  ENEMY_FREQUENCY = 0.03
+  ENEMY_FREQUENCY = 0.05
 
   def initialize
     super(WIDTH, HEIGHT)
