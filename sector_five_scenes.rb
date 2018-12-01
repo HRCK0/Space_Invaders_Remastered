@@ -138,15 +138,23 @@ class SectorFive < Gosu::Window
     @bullets.each {|bullet| bullet.move}
     @fuels.each {|fuel| fuel.move}
 
-    # Checking if enemies have been hit by the bullet
+    # Checking if enemies have b  een hit by the bullet
     @enemies.dup.each do |enemy|
       @bullets.dup.each do |bullet|
-        distance = Gosu::distance(enemy.x, enemy.y, bullet.x, bullet.y)
+        distance = Gosu::distance(enemy.x, enemy.y  ,  bullet.x, bullet.y)
         if distance < enemy.radius + bullet.radius
-          @enemies.delete enemy
           @bullets.delete bullet
-          @explosions.push Explosion.new(self, enemy.x, enemy.y)
-          @score += 500
+          enemy.decrease_hp
+          if enemy.get_health == 0
+            @explosions.push Explosion.new(self, enemy.x, enemy.y)
+            @enemies.delete enemy
+            if enemy.get_pt == 3
+            @score += 1000
+            elsif enemy.get_pt==2
+              @score+= 600
+              elsif enemy.get_pt == 1
+              @score+= 300
+          end
         end
       end
     end
@@ -229,3 +237,4 @@ end
 
 window = SectorFive.new
 window.show
+end
