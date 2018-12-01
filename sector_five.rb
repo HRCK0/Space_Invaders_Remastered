@@ -53,7 +53,7 @@ class SectorFive < Gosu::Window
 
     @enemies.dup.each do |enemy|
       distance = Gosu::distance(@player.x, @player.y, enemy.x, enemy.y)
-      if distance < enemy.radius
+      if distance < enemy.radius + @player.radius
         @enemies.delete enemy
         @explosions.push Explosion.new(self, enemy.x, enemy.y)
         @lives -= 1
@@ -85,7 +85,7 @@ class SectorFive < Gosu::Window
     @enemies.each {|enemy| enemy.draw}
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
-    @font.draw("SCORE: #{@score}; LIVES: #{@lives}", 900, 20, 2)
+    @font.draw("SCORE: #{@score}; LIVES: #{@lives}", 730, 20, 2)
     @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0
   end
 end
