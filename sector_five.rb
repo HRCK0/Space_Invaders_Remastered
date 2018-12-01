@@ -8,7 +8,8 @@ require_relative 'credit'
 class SectorFive < Gosu::Window
   WIDTH = 1920
   HEIGHT = 1080
-  ENEMY_FREQUENCY = 0.05
+  ENEMY_FREQUENCY = 0.08
+  red_screen = Gosu::Color::RED
 
   def initialize
     super(WIDTH, HEIGHT)
@@ -22,6 +23,8 @@ class SectorFive < Gosu::Window
     @font = Gosu::Font.new(45)
     @font_lost = Gosu::Font.new(200)
     @lives = 3
+    @rs_display = false
+    @red_screen = Gosu::Color::RED
   end
 
   def update
@@ -56,6 +59,7 @@ class SectorFive < Gosu::Window
       if distance < enemy.radius + @player.radius
         @enemies.delete enemy
         @explosions.push Explosion.new(self, enemy.x, enemy.y)
+        @rs_display = true
         @lives -= 1
         @score += 100
       end
@@ -82,12 +86,16 @@ class SectorFive < Gosu::Window
 
   def draw
     @player.draw
-    @background.draw(0, 0, -1 )
+    @background.draw(0, 0, -1)
     @enemies.each {|enemy| enemy.draw}
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
     @font.draw("SCORE: #{@score}; LIVES: #{@lives}", 730, 20, 2)
     @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0
+    if @rs_display and @lives != 0
+      draw_quad(0, 0, @red_screen, 1920, 0, @red_screen, 1920, 1080, @red_screen, 0, 1080, @red_screen)
+    end
+    @rs_display = false
   end
 end
 
