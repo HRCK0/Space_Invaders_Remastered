@@ -10,7 +10,7 @@ class Player
     @image = Gosu::Image.new('SPRITES/player.png')
     @velocity_x = 0
     @velocity_y = 0
-    @radius = 20
+    @radius = 35
     @window = window
   end
 
