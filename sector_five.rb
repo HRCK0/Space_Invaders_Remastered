@@ -20,11 +20,15 @@ class SectorFive < Gosu::Window
     @explosions = []
     @background = Gosu::Image.new('SPRITES/bg.png', tileable: true)
     @score = 0
-    @font = Gosu::Font.new(45)
-    @font_lost = Gosu::Font.new(200)
     @lives = 3
     @rs_display = false
     @red_screen = Gosu::Color::RED
+    @lives1 = Gosu::Image.new('SPRITES/lives1.png', tileable: true)
+    @lives2 = Gosu::Image.new('SPRITES/lives2.png', tileable: true)
+    @lives3 = Gosu::Image.new('SPRITES/lives3.png', tileable: true)
+    @font = Gosu::Font.new(100)
+    @font_lost = Gosu::Font.new(200)
+
   end
 
   def update
@@ -85,12 +89,21 @@ class SectorFive < Gosu::Window
   end
 
   def draw
+    if @lives ==3
+      @lives3.draw(25, 50, 2)
+      @font.draw(@score, 350, 50, 2)
+    elsif @lives == 2
+      @lives2.draw(25, 50, 2)
+      @font.draw(@score, 250, 50, 2)
+    elsif @lives == 1
+      @lives1.draw(25, 50, 2)
+      @font.draw(@score, 150, 50, 2)
+    end
     @player.draw
     @background.draw(0, 0, -1)
     @enemies.each {|enemy| enemy.draw}
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
-    @font.draw("SCORE: #{@score}; LIVES: #{@lives}", 730, 20, 2)
     @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0
     if @rs_display and @lives != 0
       draw_quad(0, 0, @red_screen, 1920, 0, @red_screen, 1920, 1080, @red_screen, 0, 1080, @red_screen)
