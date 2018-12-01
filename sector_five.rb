@@ -57,6 +57,7 @@ class SectorFive < Gosu::Window
         @enemies.delete enemy
         @explosions.push Explosion.new(self, enemy.x, enemy.y)
         @lives -= 1
+        @score += 100
       end
     end
     @explosions.dup.each do |explosion|
