@@ -7,7 +7,7 @@ require_relative 'explosion'
 class SectorFive < Gosu::Window
   def initialize
     super(800, 600)
-    self.caption = 'Sector Five'
+    self.caption = 'Space Invaders - Remastered (404 Games)'
     @player = Player.new(self)
   end
 
@@ -18,9 +18,7 @@ class SectorFive < Gosu::Window
     @player.move
   end
 
-
 end
 
 wind = SectorFive.new
 wind.show
-
