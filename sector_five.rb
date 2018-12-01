@@ -28,6 +28,7 @@ class SectorFive < Gosu::Window
     @game_music.play(true)
     @rs_display = false
     @red_screen = Gosu::Color::RED
+    @black_colour = Gosu::Color::BLACK
     @lives1 = Gosu::Image.new('SPRITES/lives1.png', tileable: true)
     @lives2 = Gosu::Image.new('SPRITES/lives2.png', tileable: true)
     @lives3 = Gosu::Image.new('SPRITES/lives3.png', tileable: true)
@@ -121,6 +122,7 @@ class SectorFive < Gosu::Window
     @fuels.each {|fuel| fuel.draw}
 
 
+    draw_quad(20, 1000, @black_colour, 220, 1000, @black_colour, 20, 1025, @black_colour, 220, 1025, @black_colour)
     draw_quad(20, 1000, @red_screen, 2*@player.get_fuel+20, 1000, @red_screen, 20, 1025, @red_screen, 2*@player.get_fuel+20, 1025, @red_screen)
 
     @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0 or @player.get_fuel <= 0
