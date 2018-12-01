@@ -10,7 +10,7 @@ class Enemy
   end
 
   def speed_up
-    @@speed += 1
+    @@speed += 0.5
   end
 
   def get_speed

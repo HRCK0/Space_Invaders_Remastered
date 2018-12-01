@@ -35,15 +35,17 @@ class SectorFive < Gosu::Window
     @font = Gosu::Font.new(100)
     @font_lost = Gosu::Font.new(200)
     @fuels = []
+    @game_timer = 0
   end
 
   def update
-
     # Checks if end-game conditions have been met
     if @lives == 0 or @player.get_fuel <= 0
       sleep(3)
       close!
     end
+
+    @game_timer += 1
 
     # Takes player input
     @player.turn_left if button_down?(Gosu::KbLeft)
@@ -113,6 +115,14 @@ class SectorFive < Gosu::Window
     @bullets.dup.each do |bullet|
       @bullets.delete bullet unless bullet.onscreen?
     end
+
+    # Speeds up enemies after a while
+    if @game_timer % 930 == 0
+      @enemies.each do |enemy|
+        enemy.speed_up
+      end
+    end
+
   end
 
   # Fires a bullet upon pressing spacebar
