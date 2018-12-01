@@ -89,13 +89,9 @@ class SectorFive < Gosu::Window
   end
 
   def draw
-    if @lives ==3
-      @lives3.draw(25, 50, 2)
-    elsif @lives == 2
-      @lives2.draw(25, 50, 2)
-    elsif @lives == 1
-      @lives1.draw(25, 50, 2)
-    end
+    @lives1.draw(25, 50, 2) if @lives == 1
+    @lives2.draw(25, 50, 2) if @lives == 2
+    @lives3.draw(25, 50, 2) if @lives == 3
     @font.draw("SCORE: #{@score}", 1500, 50, 2)
     @player.draw
     @background.draw(0, 0, -1)

@@ -12,6 +12,7 @@ class Player
     @velocity_y = 0
     @radius = 35
     @window = window
+    @fuel = 100
   end
 
 
