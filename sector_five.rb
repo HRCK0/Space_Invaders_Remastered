@@ -112,14 +112,17 @@ class SectorFive < Gosu::Window
     @lives2.draw(25, 50, 2) if @lives == 2
     @lives3.draw(25, 50, 2) if @lives == 3
     @font.draw("SCORE: #{@score}", 1200, 50, 2)
-    @font.draw("Fuel: #{@player.get_fuel.to_i}", 50, 1000, 2)
+
     @player.draw
-    #@fuel.draw
     @background.draw(0, 0, -1)
     @enemies.each {|enemy| enemy.draw}
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
     @fuels.each {|fuel| fuel.draw}
+
+
+    draw_quad(20, 1000, @red_screen, 2*@player.get_fuel+20, 1000, @red_screen, 20, 1025, @red_screen, 2*@player.get_fuel+20, 1025, @red_screen)
+
     @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0 or @player.get_fuel <= 0
     if @rs_display and @lives != 0
       draw_quad(0, 0, @red_screen, 1920, 0, @red_screen, 1920, 1080, @red_screen, 0, 1080, @red_screen)
