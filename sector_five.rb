@@ -8,7 +8,7 @@ require_relative 'credit'
 class SectorFive < Gosu::Window
   WIDTH = 1920
   HEIGHT = 1080
-  ENEMY_FREQUENCY = 0.03
+  ENEMY_FREQUENCY = 0.05
 
   def initialize
     super(WIDTH, HEIGHT)
@@ -18,9 +18,17 @@ class SectorFive < Gosu::Window
     @bullets = []
     @explosions = []
     @background = Gosu::Image.new('SPRITES/bg.png', tileable: true)
+    @score = 0
+    @font = Gosu::Font.new(45)
+    @font_lost = Gosu::Font.new(200)
+    @lives = 3
   end
 
   def update
+    if @lives == 0
+      sleep(3)
+      close!
+    end
     @player.turn_left if button_down?(Gosu::KbLeft)
     @player.turn_right if button_down?(Gosu::KbRight)
     @player.accelerate if button_down?(Gosu::KbUp)
@@ -38,7 +46,18 @@ class SectorFive < Gosu::Window
           @enemies.delete enemy
           @bullets.delete bullet
           @explosions.push Explosion.new(self, enemy.x, enemy.y)
+          @score += 100
         end
+      end
+    end
+
+    @enemies.dup.each do |enemy|
+      distance = Gosu::distance(@player.x, @player.y, enemy.x, enemy.y)
+      if distance < enemy.radius + @player.radius
+        @enemies.delete enemy
+        @explosions.push Explosion.new(self, enemy.x, enemy.y)
+        @lives -= 1
+        @score += 100
       end
     end
     @explosions.dup.each do |explosion|
@@ -58,17 +77,19 @@ class SectorFive < Gosu::Window
     if id == Gosu::KbSpace
       @bullets.push Bullet.new(self, @player.x, @player.y, @player.angle)
     end
+
   end
 
   def draw
     @player.draw
-    @background.draw(0, 0, 0)
+    @background.draw(0, 0, -1 )
     @enemies.each {|enemy| enemy.draw}
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
+    @font.draw("SCORE: #{@score}; LIVES: #{@lives}", 730, 20, 2)
+    @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0
   end
 end
 
 wind = SectorFive.new
 wind.show
-

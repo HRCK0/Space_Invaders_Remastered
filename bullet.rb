@@ -1,12 +1,12 @@
 require 'gosu'
 class Bullet
-  SPEED = 10.0
+  SPEED = 11.0
   attr_reader :x, :y, :radius
   def initialize(window,x,y,angle)
     @x = x
     @y = y
     @direction = angle
-    @radius = 4
+    @radius = 5
     @window = window
     @image = Gosu::Image.new('SPRITES/bullet.png')
   end
@@ -17,7 +17,7 @@ class Bullet
   end
 
   def draw
-    @image.draw(@x- @radius , @y- @radius,1)
+    @image.draw(@x- @radius , @y- @radius,0)
   end
 
   def onscreen?
