@@ -80,7 +80,7 @@ class SectorFive < Gosu::Window
 
   def draw
     @player.draw
-    @background.draw(0, 0, 0)
+    @background.draw(0, 0, -1 )
     @enemies.each {|enemy| enemy.draw}
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}

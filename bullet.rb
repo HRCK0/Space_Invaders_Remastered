@@ -17,7 +17,7 @@ class Bullet
   end
 
   def draw
-    @image.draw(@x- @radius , @y- @radius,1)
+    @image.draw(@x- @radius , @y- @radius,0)
   end
 
   def onscreen?
