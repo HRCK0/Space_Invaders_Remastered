@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="162e3273-07b9-40c7-b149-5eeb189e22aa" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/sector_five.rb" beforeDir="false" afterPath="$PROJECT_DIR$/sector_five.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SPRITES/lives1.png" beforeDir="false" afterPath="$PROJECT_DIR$/SPRITES/lives1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SPRITES/lives2.png" beforeDir="false" afterPath="$PROJECT_DIR$/SPRITES/lives2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SPRITES/lives3.png" beforeDir="false" afterPath="$PROJECT_DIR$/SPRITES/lives3.png" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/404_Games@sector_five.rcov" NAME="sector_five Coverage Results" MODIFIED="1543692727314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="404_Games" />
+    <SUITE FILE_PATH="coverage/404_Games@sector_five.rcov" NAME="sector_five Coverage Results" MODIFIED="1543693039174" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="404_Games" />
     <SUITE FILE_PATH="coverage/404_Games@enemy.rcov" NAME="enemy Coverage Results" MODIFIED="1543680532525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="404_Games" />
   </component>
   <component name="FileEditorManager">
@@ -72,8 +74,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sector_five.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="105" column="49" selection-start-line="105" selection-start-column="49" selection-end-line="105" selection-end-column="49" />
+            <state relative-caret-position="188">
+              <caret line="88" column="5" lean-forward="true" selection-start-line="88" selection-start-column="5" selection-end-line="89" />
             </state>
           </provider>
         </entry>
@@ -198,18 +200,18 @@
       <workItem from="1543680132839" duration="2091000" />
       <workItem from="1543687659302" duration="273000" />
       <workItem from="1543689202386" duration="1169000" />
-      <workItem from="1543692600807" duration="87000" />
+      <workItem from="1543692600807" duration="440000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5111000" />
+    <option name="totallyTimeSpent" value="5464000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="6" y="34" width="1248" height="640" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26767677" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26767677" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -285,8 +287,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sector_five.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="105" column="49" selection-start-line="105" selection-start-column="49" selection-end-line="105" selection-end-column="49" />
+        <state relative-caret-position="188">
+          <caret line="88" column="5" lean-forward="true" selection-start-line="88" selection-start-column="5" selection-end-line="89" />
         </state>
       </provider>
     </entry>
