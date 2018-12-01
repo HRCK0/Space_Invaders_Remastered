@@ -1,6 +1,6 @@
 require 'gosu'
 class Bullet
-  SPEED = 3
+  SPEED = 10.0
   attr_reader :x, :y, :radius
   def initialize(window,x,y,angle)
     @x = x
@@ -12,8 +12,8 @@ class Bullet
   end
 
   def move
-    @x += Gosu.offset_x(@direction,SPEED)
-    @y += Gosu.offset_y(@direction,SPEED)
+    @x += Gosu.offset_x(@direction.to_f,SPEED)
+    @y += Gosu.offset_y(@direction.to_f,SPEED)
   end
 
   def draw
