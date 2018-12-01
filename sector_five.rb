@@ -20,14 +20,15 @@ class SectorFive < Gosu::Window
     @background = Gosu::Image.new('SPRITES/bg.png', tileable: true)
     @score = 0
     @font = Gosu::Font.new(45)
+    @font_lost = Gosu::Font.new(200)
     @lives = 3
   end
 
   def update
     if @lives == 0
+      sleep(3)
       close!
     end
-
     @player.turn_left if button_down?(Gosu::KbLeft)
     @player.turn_right if button_down?(Gosu::KbRight)
     @player.accelerate if button_down?(Gosu::KbUp)
@@ -56,10 +57,11 @@ class SectorFive < Gosu::Window
         @enemies.delete enemy
         @explosions.push Explosion.new(self, enemy.x, enemy.y)
         @lives -= 1
+        @score += 100
       end
     end
     @explosions.dup.each do |explosion|
-      @explosions.delete explosion if explosion.getfinished()
+      @explosions.delete explosion if explosion.get_finished
     end
     @enemies.dup.each do |enemy|
       if enemy.y > HEIGHT + enemy.radius
@@ -84,10 +86,10 @@ class SectorFive < Gosu::Window
     @enemies.each {|enemy| enemy.draw}
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
-    @font.draw("SCORE: #{@score}; LIVES: #{@lives}", 900, 20, 2)
+    @font.draw("SCORE: #{@score}; LIVES: #{@lives}", 730, 20, 2)
+    @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0
   end
 end
 
 wind = SectorFive.new
 wind.show
-
