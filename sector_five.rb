@@ -18,9 +18,16 @@ class SectorFive < Gosu::Window
     @bullets = []
     @explosions = []
     @background = Gosu::Image.new('SPRITES/bg.png', tileable: true)
+    @score = 0
+    @font = Gosu::Font.new(45)
+    @lives = 3
   end
 
   def update
+    if @lives == 0
+      close!
+    end
+
     @player.turn_left if button_down?(Gosu::KbLeft)
     @player.turn_right if button_down?(Gosu::KbRight)
     @player.accelerate if button_down?(Gosu::KbUp)
@@ -38,7 +45,17 @@ class SectorFive < Gosu::Window
           @enemies.delete enemy
           @bullets.delete bullet
           @explosions.push Explosion.new(self, enemy.x, enemy.y)
+          @score += 100
         end
+      end
+    end
+
+    @enemies.each do |enemy|
+      distance = Gosu::distance(@player.x, @player.y, enemy.x, enemy.y)
+      if distance < enemy.radius
+        @enemies.delete enemy
+        @explosions.push Explosion.new(self, enemy.x, enemy.y)
+        @lives -= 1
       end
     end
     @explosions.dup.each do |explosion|
@@ -58,6 +75,7 @@ class SectorFive < Gosu::Window
     if id == Gosu::KbSpace
       @bullets.push Bullet.new(self, @player.x, @player.y, @player.angle)
     end
+
   end
 
   def draw
@@ -66,6 +84,7 @@ class SectorFive < Gosu::Window
     @enemies.each {|enemy| enemy.draw}
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
+    @font.draw("SCORE: #{@score}; LIVES: #{@lives}", 900, 20, 2)
   end
 end
 
