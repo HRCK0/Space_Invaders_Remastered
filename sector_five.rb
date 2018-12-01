@@ -91,14 +91,12 @@ class SectorFive < Gosu::Window
   def draw
     if @lives ==3
       @lives3.draw(25, 50, 2)
-      @font.draw(@score, 350, 50, 2)
     elsif @lives == 2
       @lives2.draw(25, 50, 2)
-      @font.draw(@score, 250, 50, 2)
     elsif @lives == 1
       @lives1.draw(25, 50, 2)
-      @font.draw(@score, 150, 50, 2)
     end
+    @font.draw("SCORE: #{@score}", 1500, 50, 2)
     @player.draw
     @background.draw(0, 0, -1)
     @enemies.each {|enemy| enemy.draw}
