@@ -42,7 +42,6 @@ class SectorFive < Gosu::Window
     @lives2 = Gosu::Image.new('SPRITES/lives2.png', tileable: true)
     @lives3 = Gosu::Image.new('SPRITES/lives3.png', tileable: true)
     @font = Gosu::Font.new(100)
-    @font_lost = Gosu::Font.new(200)
     @fuels = []
     @game_timer = 0
   end
@@ -53,6 +52,7 @@ class SectorFive < Gosu::Window
     @scene = :end
     @end_music = Gosu::Song.new('MUSIC/gameover-music.mp3')
     @end_music.play(true)
+    @font_lost = Gosu::Font.new(300)
   end
 
   def draw
@@ -72,6 +72,7 @@ class SectorFive < Gosu::Window
 
   def draw_end
     @end_background.draw(0,0,0)
+    @font.draw(@score, 960, 480, 2)
   end
 
   def update
@@ -94,6 +95,21 @@ class SectorFive < Gosu::Window
 
   def button_down_start(id)
     initialize_game
+  end
+
+  def button_down_game(id)
+    if id == Gosu::KbSpace
+      @bullets.push Bullet.new(self, @player.getxCoord, @player.getyCoord, @player.getAngle)
+    end
+
+  end
+
+  def  button_down_end(id)
+    if id == Gosu::KbP
+      initialize
+      elsif id == Gosu::KbQ
+        close!
+    end
   end
 
   def update_game
@@ -200,7 +216,6 @@ class SectorFive < Gosu::Window
     draw_quad(20, 1000, @red_screen, 2*@player.get_fuel+20, 1000, @red_screen, 20, 1025, @red_screen, 2*@player.get_fuel+20, 1025, @red_screen)
 
     # Game Over Message
-    @font_lost.draw("GAME OVER!", 450, 500, 2) if @lives == 0 or @player.get_fuel <= 0
 
     # Red splash screen upon player getting hit
     if @rs_display and @lives != 0
@@ -209,12 +224,6 @@ class SectorFive < Gosu::Window
     @rs_display = false
   end
 
-    def button_down_game(id)
-      if id == Gosu::KbSpace
-        @bullets.push Bullet.new(self, @player.getxCoord, @player.getyCoord, @player.getAngle)
-      end
-
-    end
 
 end
 
