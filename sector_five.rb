@@ -10,8 +10,9 @@ class SectorFive < Gosu::Window
   WIDTH = 1920
   HEIGHT = 1080
   ENEMY_FREQUENCY = 0.08
-  FUEL_FREQUENCY = 0.001
+  FUEL_FREQUENCY = 0.002
   red_screen = Gosu::Color::RED
+  game_timer = 0
 
   def initialize
     super(WIDTH, HEIGHT)
@@ -36,7 +37,7 @@ class SectorFive < Gosu::Window
   end
 
   def update
-    if @lives == 0 or @player.get_fuel == 0
+    if @lives == 0 or @player.get_fuel <= 0
       sleep(3)
       close!
     end
@@ -119,7 +120,7 @@ class SectorFive < Gosu::Window
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
     @fuels.each {|fuel| fuel.draw}
-    @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0 or @player.get_fuel == 0
+    @font_lost.draw("YOU LOST!", 450, 500, 2) if @lives == 0 or @player.get_fuel <= 0
     if @rs_display and @lives != 0
       draw_quad(0, 0, @red_screen, 1920, 0, @red_screen, 1920, 1080, @red_screen, 0, 1080, @red_screen)
     end

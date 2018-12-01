@@ -16,7 +16,7 @@ class Player
   end
 
   def decrease_fuel
-    @fuel -= 0.01
+    @fuel -= 0.05
   end
 
   def reset_fuel
