@@ -17,6 +17,7 @@ class SectorFive < Gosu::Window
     @enemies = []
     @bullets = []
     @explosions = []
+    @background = Gosu::Image.new('SPRITES/bg.png', tileable: true)
   end
 
   def update
@@ -55,14 +56,15 @@ class SectorFive < Gosu::Window
 
   def button_down(id)
     if id == Gosu::KbSpace
-      @bullets.push Bullet.new(self, @player.x, @player.y, @player.angle) # @player_angle dne
+      @bullets.push Bullet.new(self, @player.x, @player.y, @player.angle)
     end
   end
 
   def draw
     @player.draw
-    @enemies.each {|enemy| enemy.draw} # might crash!!
-    @bullets.each {|bullet| bullet.draw} # might crash!!
+    @background.draw(0, 0, 0)
+    @enemies.each {|enemy| enemy.draw}
+    @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
   end
 end
