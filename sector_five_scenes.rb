@@ -18,8 +18,9 @@ class SectorFive < Gosu::Window
     self.caption = 'Space Invaders - Remastered (404 Games)'
     @background_image = Gosu::Image.new('SPRITES/homepage.png')
     @scene = :start
-    @start_music = Gosu::Song.new('homepage-music.mp3')
+    @start_music = Gosu::Song.new('MUSIC/homepage-music.mp3')
     @start_music.play(true)
+    @game_timer = 1
   end
 
   def initialize_game
@@ -32,7 +33,7 @@ class SectorFive < Gosu::Window
     @background = Gosu::Image.new('SPRITES/bg2.png', tileable: true)
     @score = 0
     @lives = 3
-    @game_music = Gosu::Song.new('background-music.mp3')
+    @game_music = Gosu::Song.new('MUSIC/background-music.mp3')
     @game_music.play(true)
     @rs_display = false
     @red_screen = Gosu::Color::RED
@@ -42,9 +43,17 @@ class SectorFive < Gosu::Window
     @lives2 = Gosu::Image.new('SPRITES/lives2.png', tileable: true)
     @lives3 = Gosu::Image.new('SPRITES/lives3.png', tileable: true)
     @font = Gosu::Font.new(100)
-    @font_lost = Gosu::Font.new(200)
     @fuels = []
-    @game_timer = 0
+    @game_timer = 1
+  end
+
+  def initialize_end
+    self.caption = 'Space Invaders - Remastered (404 Games)'
+    @end_background = Gosu::Image.new('SPRITES/gameover-background.png')
+    @scene = :end
+    @end_music = Gosu::Song.new('MUSIC/gameover-music.mp3')
+    @end_music.play(true)
+    @font_lost = Gosu::Font.new(300)
   end
 
   def draw
@@ -62,12 +71,15 @@ class SectorFive < Gosu::Window
     @background_image.draw(0,0,0)
   end
 
+  def draw_end
+    @end_background.draw(0,0,0)
+    @font.draw(@score, 960, 480, 2)
+  end
+
   def update
     case @scene
     when :game
       update_game
-    when :end
-      update_end
     end
   end
 
@@ -86,12 +98,31 @@ class SectorFive < Gosu::Window
     initialize_game
   end
 
+  def button_down_game(id)
+    if id == Gosu::KbSpace
+      @bullets.push Bullet.new(self, @player.getxCoord, @player.getyCoord, @player.getAngle)
+    end
+
+  end
+
+  def  button_down_end(id)
+    if id == Gosu::KbP
+      @game_timer = 1
+      @enemies.each do |enemy|
+        enemy.reset_speed
+      end
+      initialize
+      elsif id == Gosu::KbQ
+        close!
+    end
+  end
+
   def update_game
+
 
     # Checks if end-game conditions have been met
     if @lives == 0 or @player.get_fuel <= 0
-      sleep(3)
-      close!
+       initialize_end
     end
 
     @game_timer += 1
@@ -113,15 +144,23 @@ class SectorFive < Gosu::Window
     @bullets.each {|bullet| bullet.move}
     @fuels.each {|fuel| fuel.move}
 
-    # Checking if enemies have been hit by the bullet
+    # Checking if enemies have b  een hit by the bullet
     @enemies.dup.each do |enemy|
       @bullets.dup.each do |bullet|
-        distance = Gosu::distance(enemy.x, enemy.y, bullet.x, bullet.y)
+        distance = Gosu::distance(enemy.x, enemy.y  ,  bullet.x, bullet.y)
         if distance < enemy.radius + bullet.radius
-          @enemies.delete enemy
           @bullets.delete bullet
-          @explosions.push Explosion.new(self, enemy.x, enemy.y)
-          @score += 500
+          enemy.decrease_hp
+          if enemy.get_health == 0
+            @explosions.push Explosion.new(self, enemy.x, enemy.y)
+            @enemies.delete enemy
+            if enemy.get_pt == 3
+            @score += 1000
+            elsif enemy.get_pt==2
+              @score+= 600
+              elsif enemy.get_pt == 1
+              @score+= 300
+          end
         end
       end
     end
@@ -168,6 +207,7 @@ class SectorFive < Gosu::Window
       @enemies.each do |enemy|
         enemy.speed_up
       end
+      @game_timer = 1
     end
   end
 
@@ -191,7 +231,6 @@ class SectorFive < Gosu::Window
     draw_quad(20, 1000, @red_screen, 2*@player.get_fuel+20, 1000, @red_screen, 20, 1025, @red_screen, 2*@player.get_fuel+20, 1025, @red_screen)
 
     # Game Over Message
-    @font_lost.draw("GAME OVER!", 450, 500, 2) if @lives == 0 or @player.get_fuel <= 0
 
     # Red splash screen upon player getting hit
     if @rs_display and @lives != 0
@@ -200,14 +239,9 @@ class SectorFive < Gosu::Window
     @rs_display = false
   end
 
-    def button_down_game(id)
-      if id == Gosu::KbSpace
-        @bullets.push Bullet.new(self, @player.getxCoord, @player.getyCoord, @player.getAngle)
-      end
-
-    end
 
 end
 
 window = SectorFive.new
 window.show
+end
