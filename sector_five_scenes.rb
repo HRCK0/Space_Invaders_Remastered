@@ -46,6 +46,7 @@ class SectorFive < Gosu::Window
     @fuels = []
     @game_timer = 1
     @count = 0
+    @game_quicker_speedup_counter = 0
   end
 
   def initialize_end
@@ -205,15 +206,18 @@ class SectorFive < Gosu::Window
     end
 
 
-    if @game_timer%930==0
+    if @game_timer % (930 - @game_quicker_speedup_counter) == 0
       @enemies.each do |enemy|
         enemy.speed_up
+        enemy.speed_up if @game_quicker_speedup_counter > 0
       end
       @game_timer = 1
       @count += 1
-      if @count > 3
+      if @count > 3 - (@game_quicker_speedup_counter / 100)
         enemy.reset_speed
         @count = 0
+        @lives += 1 if @lives < 3
+        @game_quicker_speedup_counter += 100
       end
     end
   end
