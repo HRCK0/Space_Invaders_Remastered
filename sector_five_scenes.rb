@@ -18,7 +18,7 @@ class SectorFive < Gosu::Window
     self.caption = 'Space Invaders - Remastered (404 Games)'
     @background_image = Gosu::Image.new('SPRITES/homepage.png')
     @scene = :start
-    @start_music = Gosu::Song.new('homepage-music.mp3')
+    @start_music = Gosu::Song.new('MUSIC/homepage-music.mp3')
     @start_music.play(true)
   end
 
@@ -32,7 +32,7 @@ class SectorFive < Gosu::Window
     @background = Gosu::Image.new('SPRITES/bg2.png', tileable: true)
     @score = 0
     @lives = 3
-    @game_music = Gosu::Song.new('background-music.mp3')
+    @game_music = Gosu::Song.new('MUSIC/background-music.mp3')
     @game_music.play(true)
     @rs_display = false
     @red_screen = Gosu::Color::RED
@@ -45,6 +45,14 @@ class SectorFive < Gosu::Window
     @font_lost = Gosu::Font.new(200)
     @fuels = []
     @game_timer = 0
+  end
+
+  def initialize_end
+    self.caption = 'Space Invaders - Remastered (404 Games)'
+    @end_background = Gosu::Image.new('SPRITES/gameover-background.png')
+    @scene = :end
+    @end_music = Gosu::Song.new('MUSIC/gameover-music.mp3')
+    @end_music.play(true)
   end
 
   def draw
@@ -62,12 +70,14 @@ class SectorFive < Gosu::Window
     @background_image.draw(0,0,0)
   end
 
+  def draw_end
+    @end_background.draw(0,0,0)
+  end
+
   def update
     case @scene
     when :game
       update_game
-    when :end
-      update_end
     end
   end
 
@@ -90,8 +100,7 @@ class SectorFive < Gosu::Window
 
     # Checks if end-game conditions have been met
     if @lives == 0 or @player.get_fuel <= 0
-      sleep(3)
-      close!
+       initialize_end
     end
 
     @game_timer += 1
