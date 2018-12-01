@@ -21,6 +21,8 @@ class SectorFive < Gosu::Window
     @background = Gosu::Image.new('SPRITES/bg.png', tileable: true)
     @score = 0
     @lives = 3
+    @game_music = Gosu::Song.new('background-music.mp3')
+    @game_music.play(true)
     @rs_display = false
     @red_screen = Gosu::Color::RED
     @lives1 = Gosu::Image.new('SPRITES/lives1.png', tileable: true)
