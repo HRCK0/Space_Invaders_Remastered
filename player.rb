@@ -43,6 +43,17 @@ class Player
     @velocity_y += Gosu.offset_y(@angle, ACCELERATION)
   end
 
+  def getxCoord
+    @x
+  end
+
+  def getyCoord
+    @y
+  end
+
+  def getAngle
+    @angle
+  end
   def move
     @x += @velocity_x
     @y += @velocity_y
