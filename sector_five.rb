@@ -6,8 +6,8 @@ require_relative 'explosion'
 require_relative 'credit'
 
 class SectorFive < Gosu::Window
-  WIDTH = 800
-  HEIGHT = 600
+  WIDTH = 1920
+  HEIGHT = 1080
   ENEMY_FREQUENCY = 0.03
 
   def initialize
