@@ -1,6 +1,6 @@
 require 'gosu'
 class Bullet
-  SPEED = 10.0
+  SPEED = 11.0
   attr_reader :x, :y, :radius
   def initialize(window,x,y,angle)
     @x = x
