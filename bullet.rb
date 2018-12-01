@@ -6,7 +6,7 @@ class Bullet
     @x = x
     @y = y
     @direction = angle
-    @radius = 12
+    @radius = 5
     @window = window
     @image = Gosu::Image.new('SPRITES/bullet.png')
   end

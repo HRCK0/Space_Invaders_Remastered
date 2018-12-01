@@ -50,9 +50,9 @@ class SectorFive < Gosu::Window
       end
     end
 
-    @enemies.each do |enemy|
+    @enemies.dup.each do |enemy|
       distance = Gosu::distance(@player.x, @player.y, enemy.x, enemy.y)
-      if distance < enemy.radius
+      if distance < enemy.radius + @player.radius
         @enemies.delete enemy
         @explosions.push Explosion.new(self, enemy.x, enemy.y)
         @lives -= 1
