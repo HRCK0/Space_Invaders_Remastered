@@ -11,7 +11,7 @@ class SectorFive < Gosu::Window
   HEIGHT = 1080
   ENEMY_FREQUENCY = 0.08
   FUEL_FREQUENCY = 0.002
-  NUKE_FREQUENCY = 0.002
+  NUKE_FREQUENCY = 0.0001
   red_screen = Gosu::Color::RED
   game_timer = 0
 
@@ -144,6 +144,7 @@ class SectorFive < Gosu::Window
     @enemies.push Enemy.new(self) if rand < ENEMY_FREQUENCY
     @fuels.push Fuel.new(self) if rand < FUEL_FREQUENCY
     @nukes.push Nuke.new(self) if rand < NUKE_FREQUENCY
+    @fules.push Fule.new(self) if @player.get_fuel == 10
 
     # Moves enemies, bullets and fuel
     @enemies.each {|enemy| enemy.move}
@@ -270,6 +271,12 @@ class SectorFive < Gosu::Window
 
 end
 
+end
+
+def bg_image_animation
+
+end
+
+
 window = SectorFive.new
 window.show
-end
