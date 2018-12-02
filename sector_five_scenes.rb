@@ -13,7 +13,7 @@ class SectorFive < Gosu::Window
   FUEL_FREQUENCY = 0.002
   NUKE_FREQUENCY = 0.0001
   red_screen = Gosu::Color::RED
-  game_timer = 0
+  #game_timer = 0
 
   def initialize
     super(WIDTH, HEIGHT)
@@ -54,7 +54,7 @@ class SectorFive < Gosu::Window
     @life_sound = Gosu::Sample.new('MUSIC/extra-life.mp3')
     @death_sound = Gosu::Sample.new('MUSIC/death-sound.wav')
     @count = 0
-    @game_quicker_speedup_counter = 0
+    #@game_quicker_speedup_counter = 0
     @level = 1
   end
 
@@ -153,7 +153,7 @@ class SectorFive < Gosu::Window
 
     @fuels.push Fuel.new(self) if rand < FUEL_FREQUENCY
     @nukes.push Nuke.new(self) if rand < NUKE_FREQUENCY
-    @fules.push Fule.new(self) if @player.get_fuel == 10
+    # @fuels.push Fuel.new(self) if @player.get_fuel == 10
 
     # Moves enemies, bullets and fuel
     @enemies.each {|enemy| enemy.move}
@@ -249,7 +249,7 @@ class SectorFive < Gosu::Window
           @lives += 1
           @life_sound.play
         end
-        @game_quicker_speedup_counter += 100
+        # @game_quicker_speedup_counter += 100
       end
     end
   end
@@ -266,11 +266,7 @@ class SectorFive < Gosu::Window
     # Display player, background, enemies bullets, explosions, fuels
     @player.draw
     @background.draw(0, 0, -1)
-
-    #################
     @enemies.each {|enemy| enemy.draw}
-    #################
-
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
     @fuels.each {|fuel| fuel.draw}
@@ -290,7 +286,6 @@ class SectorFive < Gosu::Window
     end
   end
 end
-
 
 window = SectorFive.new
 window.show
