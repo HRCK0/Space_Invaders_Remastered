@@ -48,6 +48,11 @@ class SectorFive < Gosu::Window
     @font = Gosu::Font.new(100)
     @fuels = []
     @game_timer = 1
+    @explosion_sound = Gosu::Sample.new('MUSIC/explosion.aiff')
+    @shooting_sound = Gosu::Sample.new('MUSIC/laser-beam.aiff')
+    @nuke_sound = Gosu::Sample.new('MUSIC/nuke.wav')
+    @life_sound = Gosu::Sample.new('MUSIC/extra-life.mp3')
+    @death_sound = Gosu::Sample.new('MUSIC/death-sound.wav')
     @count = 0
     @game_quicker_speedup_counter = 0
   end
@@ -106,6 +111,7 @@ class SectorFive < Gosu::Window
   def button_down_game(id)
     if id == Gosu::KbSpace
       @bullets.push Bullet.new(self, @player.getxCoord, @player.getyCoord, @player.getAngle)
+      @shooting_sound.play
     end
 
   end
@@ -160,6 +166,7 @@ class SectorFive < Gosu::Window
           @bullets.delete bullet
           enemy.decrease_hp
           if enemy.get_health == 0
+            @explosion_sound.play
             @explosions.push Explosion.new(self, enemy.x, enemy.y)
             @enemies.delete enemy
             if enemy.get_pt == 3
@@ -182,6 +189,7 @@ class SectorFive < Gosu::Window
         @rs_display = true
         @lives -= 1
         @score += 500
+        @death_sound.play
       end
     end
 
@@ -198,6 +206,7 @@ class SectorFive < Gosu::Window
         distance = Gosu::distance(@player.x, @player.y, nuke.x, nuke.y)
         if distance < nuke.radius + @player.radius
           @nukes.delete nuke
+          @nuke_sound.play
           @enemies.dup.each do |enemy|
             @explosions.push Explosion.new(self, enemy.x, enemy.y)
             @enemies.delete enemy
@@ -233,7 +242,10 @@ class SectorFive < Gosu::Window
       if @count > 3 - (@game_quicker_speedup_counter / 100)
         enemy.reset_speed
         @count = 0
-        @lives += 1 if @lives < 3
+        if @lives < 3
+          @lives += 1
+          @life_sound.play
+        end
         @game_quicker_speedup_counter += 100
       end
     end
