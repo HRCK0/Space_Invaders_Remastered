@@ -11,8 +11,8 @@ class SectorFive < Gosu::Window
   HEIGHT = 1080
   ENEMY_FREQUENCY = 0.08
   FUEL_FREQUENCY = 0.0015
+  LIFE_FREQUENCY = 0.0003
   red_screen = Gosu::Color::RED
-  game_timer = 0
 
   def initialize
     super(WIDTH, HEIGHT)
@@ -35,6 +35,7 @@ class SectorFive < Gosu::Window
     @font = Gosu::Font.new(100)
     @font_lost = Gosu::Font.new(200)
     @fuels = []
+    @lives_collectable = []
     @game_timer = 0
   end
 
@@ -59,11 +60,13 @@ class SectorFive < Gosu::Window
     # Adds enemies and fuels
     @enemies.push Enemy.new(self) if rand < ENEMY_FREQUENCY
     @fuels.push Fuel.new(self) if rand < FUEL_FREQUENCY
+    @lives_collectable.push Life.new(self) if rand < LIFE_FREQUENCY
 
-    # Moves enemies, bullets and fuel
+    # Moves enemies, bullets, life and fuel
     @enemies.each {|enemy| enemy.move}
     @bullets.each {|bullet| bullet.move}
     @fuels.each {|fuel| fuel.move}
+    @lives_collectable.each {|life| life.move}
 
     # Checking if enemies have been hit by the bullet
     @enemies.dup.each do |enemy|
@@ -99,6 +102,15 @@ class SectorFive < Gosu::Window
       end
     end
 
+    # Checks if the player collected the life
+    @lives_collectable.dup.each do |life|
+      distance = Gosu::distance(@player.x, @player.y, life.x, life.y)
+      if distance < life.radius + @player.radius
+        @lives += 1
+        @lives_collectable.delete life
+      end
+    end
+
     # Ends explosion effect
     @explosions.dup.each do |explosion|
       @explosions.delete explosion if explosion.getfinished()
@@ -121,8 +133,8 @@ class SectorFive < Gosu::Window
       @enemies.each do |enemy|
         enemy.speed_up
       end
+      @game_timer = 0
     end
-
   end
 
   # Fires a bullet upon pressing spacebar
