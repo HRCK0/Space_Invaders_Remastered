@@ -11,7 +11,7 @@ class SectorFive < Gosu::Window
   HEIGHT = 1080
   ENEMY_FREQUENCY = 0.08
   FUEL_FREQUENCY = 0.002
-  NUKE_FREQUENCY = 0.0001
+  NUKE_FREQUENCY = 0.0002
   red_screen = Gosu::Color::RED
   #game_timer = 0
 
@@ -36,8 +36,6 @@ class SectorFive < Gosu::Window
     @background = Gosu::Image.new('SPRITES/bg2.png', tileable: true)
     @score = 0
     @lives = 3
-    @game_music = Gosu::Song.new('MUSIC/background-music.mp3')
-    @game_music.play(true)
     @rs_display = false
     @red_screen = Gosu::Color::RED
     @black_colour = Gosu::Color::BLACK
@@ -48,13 +46,18 @@ class SectorFive < Gosu::Window
     @font = Gosu::Font.new(100)
     @fuels = []
     @game_timer = 1
+    @file_highest_score= open('record.txt').read
+
+    #Sounds and Music
+    @game_music = Gosu::Song.new('MUSIC/background-music.mp3')
+    @game_music.play(true)
     @explosion_sound = Gosu::Sample.new('MUSIC/explosion.aiff')
     @shooting_sound = Gosu::Sample.new('MUSIC/laser-beam.aiff')
     @nuke_sound = Gosu::Sample.new('MUSIC/nuke.wav')
     @life_sound = Gosu::Sample.new('MUSIC/extra-life.mp3')
     @death_sound = Gosu::Sample.new('MUSIC/death-sound.wav')
+
     @count = 0
-    #@game_quicker_speedup_counter = 0
     @level = 1
   end
 
@@ -81,11 +84,34 @@ class SectorFive < Gosu::Window
   def draw_start
     @background_image.draw(0,0,0)
   end
-
+#=begin
   def draw_end
     @end_background.draw(0,0,0)
     @font.draw(@score, 960, 480, 2)
+    if @file_highest_score.to_i < @score
+      @file_highest_score = @score
+    end
+    @font.draw("High Score:  #{@file_highest_score}", 460, 620, 2)
   end
+#=end
+=begin
+  def draw_end
+    @end_background.draw(0,0,0)
+    @font.draw(@score, 960, 480, 2)
+
+    read_high_score = open('record.txt').read
+    file_highest_score = File.new('record.txt', 'w+')
+
+    if read_high_score.to_i < @score
+      # file_highest_score = @score.to_s
+      @font.draw("New High Score:  #{@score}", 360, 620, 2)
+      #File.write(@score)
+    else
+      @font.draw("High Score:  #{file_highest_score.sysread(15)}", 460, 620, 2)
+    end
+    file_highest_score.close
+  end
+=end
 
   def update
     case @scene
@@ -136,6 +162,8 @@ class SectorFive < Gosu::Window
     if @lives == 0 or @player.get_fuel <= 0
        initialize_end
     end
+
+    # puts @file_highest_score
 
     @game_timer += 1
     # Takes player input
