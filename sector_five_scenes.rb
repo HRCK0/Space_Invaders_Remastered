@@ -256,7 +256,7 @@ class SectorFive < Gosu::Window
     @lives1.draw(25, 50, 2) if @lives == 1
     @lives2.draw(25, 50, 2) if @lives == 2
     @lives3.draw(25, 50, 2) if @lives == 3
-    @font.draw("Поени: #{@score}", 1200, 50, 2)
+    @font.draw("Score: #{@score}", 1200, 50, 2)
 
     # Display player, background, enemies bullets, explosions, fuels
     @player.draw
