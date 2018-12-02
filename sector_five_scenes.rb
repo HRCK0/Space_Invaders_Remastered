@@ -45,6 +45,10 @@ class SectorFive < Gosu::Window
     @font = Gosu::Font.new(100)
     @fuels = []
     @game_timer = 1
+    @explosion_sound = Gosu::Sample.new('MUSIC/explosion.aiff')
+    @shooting_sound = Gosu::Sample.new('MUSIC/laser-beam.mp3')
+    @nuke_sound = Gosu::Sample.new('MUSIC/nuke.wav')
+    @life_sound = Gosu::Sample.new('MUSIC/extra-life.mp3')
   end
 
   def initialize_end
@@ -101,6 +105,7 @@ class SectorFive < Gosu::Window
   def button_down_game(id)
     if id == Gosu::KbSpace
       @bullets.push Bullet.new(self, @player.getxCoord, @player.getyCoord, @player.getAngle)
+      @shooting_sound.play
     end
 
   end
@@ -152,6 +157,7 @@ class SectorFive < Gosu::Window
           @bullets.delete bullet
           enemy.decrease_hp
           if enemy.get_health == 0
+            @explosion_sound.play
             @explosions.push Explosion.new(self, enemy.x, enemy.y)
             @enemies.delete enemy
             if enemy.get_pt == 3
