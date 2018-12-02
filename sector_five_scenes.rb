@@ -277,16 +277,9 @@ class SectorFive < Gosu::Window
     if @rs_display and @lives != 0
       draw_quad(0, 0, @red_screen, 1920, 0, @red_screen, 1920, 1080, @red_screen, 0, 1080, @red_screen)
     end
-    @rs_display = false
+      @rs_display = false
+    end
   end
-
-
-end
-
-end
-
-def bg_image_animation
-
 end
 
 
