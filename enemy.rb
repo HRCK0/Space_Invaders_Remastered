@@ -1,3 +1,4 @@
+# noinspection RubyClassVariableUsageInspection,RubyInstanceVariableNamingConvention
 class Enemy
   @@speed = 4
   attr_reader :x, :y, :radius

@@ -1,3 +1,4 @@
+# noinspection RubyInstanceVariableNamingConvention
 class Fuel
   SPEED = 2
   attr_reader :x, :y, :radius

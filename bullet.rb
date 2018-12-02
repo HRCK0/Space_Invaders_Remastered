@@ -1,4 +1,5 @@
 require 'gosu'
+# noinspection RubyResolve,RubyInstanceVariableNamingConvention
 class Bullet
   SPEED = 11.0
   attr_reader :x, :y, :radius

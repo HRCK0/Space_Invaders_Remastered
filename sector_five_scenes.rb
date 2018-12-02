@@ -6,13 +6,16 @@ require_relative 'explosion'
 require_relative 'fuel'
 require_relative 'nuke'
 
-class SectorFive < Gosu::Window
+# noinspection RubyScope,RubyResolve,RubyTooManyInstanceVariablesInspection
+class SectorFiveScenes < Gosu::Window
   WIDTH = 1920
   HEIGHT = 1080
   ENEMY_FREQUENCY = 0.08
   FUEL_FREQUENCY = 0.002
   NUKE_FREQUENCY = 0.0001
+  # noinspection RubyUnusedLocalVariable
   red_screen = Gosu::Color::RED
+  # noinspection RubyUnusedLocalVariable
   game_timer = 0
 
   def initialize
@@ -45,6 +48,7 @@ class SectorFive < Gosu::Window
     @lives1 = Gosu::Image.new('SPRITES/lives1.png', tileable: true)
     @lives2 = Gosu::Image.new('SPRITES/lives2.png', tileable: true)
     @lives3 = Gosu::Image.new('SPRITES/lives3.png', tileable: true)
+    # noinspection RubyArgCount
     @font = Gosu::Font.new(100)
     @fuels = []
     @game_timer = 1
@@ -63,10 +67,12 @@ class SectorFive < Gosu::Window
     @scene = :end
     @end_music = Gosu::Song.new('MUSIC/gameover-music.mp3')
     @end_music.play(true)
+    # noinspection RubyArgCount
     @font_lost = Gosu::Font.new(300)
   end
 
   def draw
+    # noinspection RubyCaseWithoutElseBlockInspection
     case @scene
     when :start
       draw_start
@@ -87,6 +93,7 @@ class SectorFive < Gosu::Window
   end
 
   def update
+    # noinspection RubyCaseWithoutElseBlockInspection
     case @scene
     when :game
       update_game
@@ -94,6 +101,7 @@ class SectorFive < Gosu::Window
   end
 
   def button_down(id)
+    # noinspection RubyCaseWithoutElseBlockInspection
     case @scene
     when :start
       button_down_start(id)
@@ -104,7 +112,7 @@ class SectorFive < Gosu::Window
     end
   end
 
-  def button_down_start(id)
+  def button_down_start(_id)
     initialize_game
   end
 
@@ -119,9 +127,7 @@ class SectorFive < Gosu::Window
   def  button_down_end(id)
     if id == Gosu::KbP
       @game_timer = 1
-      @enemies.each do |enemy|
-        enemy.reset_speed
-      end
+      @enemies.each(&:reset_speed)
       initialize
       elsif id == Gosu::KbQ
         close!
@@ -153,10 +159,10 @@ class SectorFive < Gosu::Window
     @fules.push Fule.new(self) if @player.get_fuel == 10
 
     # Moves enemies, bullets and fuel
-    @enemies.each {|enemy| enemy.move}
-    @bullets.each {|bullet| bullet.move}
-    @fuels.each {|fuel| fuel.move}
-    @nukes.each {|nuke| nuke.move}
+    @enemies.each(&:move)
+    @bullets.each(&:move)
+    @fuels.each(&:move)
+    @nukes.each(&:move)
 
     # Checking if enemies have b  een hit by the bullet
     @enemies.dup.each do |enemy|
@@ -216,7 +222,7 @@ class SectorFive < Gosu::Window
 
     # Ends explosion effect
     @explosions.dup.each do |explosion|
-      @explosions.delete explosion if explosion.getfinished()
+      @explosions.delete explosion if explosion.getfinished
     end
 
     # Removing either destroyed enemies or collided enemies
@@ -256,20 +262,16 @@ class SectorFive < Gosu::Window
     @lives1.draw(25, 50, 2) if @lives == 1
     @lives2.draw(25, 50, 2) if @lives == 2
     @lives3.draw(25, 50, 2) if @lives == 3
-<<<<<<< HEAD
-    @font.draw("SCORE: #{@score}", 1200, 50, 2)
-=======
     @font.draw("Score: #{@score}", 1200, 50, 2)
->>>>>>> 553c5b356d262096f1cda72d9df4c55cf4f1a978
 
     # Display player, background, enemies bullets, explosions, fuels
     @player.draw
     @background.draw(0, 0, -1)
-    @enemies.each {|enemy| enemy.draw}
-    @bullets.each {|bullet| bullet.draw}
-    @explosions.each {|explosion| explosion.draw}
-    @fuels.each {|fuel| fuel.draw}
-    @nukes.each {|nuke| nuke.draw}
+    @enemies.each(&:draw)
+    @bullets.each(&:draw)
+    @explosions.each(&:draw)
+    @fuels.each(&:draw)
+    @nukes.each(&:draw)
 
     # Fuel bar display
     draw_quad(20, 1000, @black_colour, 220, 1000, @black_colour, 20, 1025, @black_colour, 220, 1025, @black_colour)
@@ -287,5 +289,5 @@ class SectorFive < Gosu::Window
 end
 
 
-window = SectorFive.new
+window = SectorFiveScenes.new
 window.show

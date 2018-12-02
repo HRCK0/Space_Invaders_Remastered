@@ -1,3 +1,4 @@
+# noinspection RubyInstanceVariableNamingConvention,RubyResolve,RubyInstanceMethodNamingConvention
 class Player
   ROTATION_SPEED = 5.5
   ACCELERATION = 0.8

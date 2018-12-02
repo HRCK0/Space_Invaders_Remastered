@@ -1,3 +1,4 @@
+# noinspection RubyInstanceVariableNamingConvention
 class Point
   def initialize(xcord, ycord) # __init__ method
     @x = xcord
@@ -23,9 +24,7 @@ puts "Input the age of 'person'"
 var_name = gets.to_i
 puts "Vida is #{var_name} years old"
 
-for i in 1..10
-  puts i
-end
+(1..10).each(&method(:puts))
 
 def func_name(number)
   if number == 0

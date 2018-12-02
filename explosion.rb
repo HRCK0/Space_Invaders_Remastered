@@ -1,3 +1,4 @@
+# noinspection RubyResolve,RubyInstanceVariableNamingConvention
 class Explosion
   def initialize(window,x,y)
     @x = x
@@ -23,7 +24,7 @@ class Explosion
   end
 
   def getfinished
-    return @finished
+    @finished
   end
 
 end

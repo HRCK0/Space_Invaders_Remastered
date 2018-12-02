@@ -1,3 +1,4 @@
+# noinspection RubyInstanceVariableNamingConvention
 class Nuke
   SPEED = 5
   attr_reader :x, :y, :radius

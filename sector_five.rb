@@ -3,15 +3,17 @@ require_relative 'player'
 require_relative 'enemy'
 require_relative 'bullet'
 require_relative 'explosion'
-require_relative 'credit'
 require_relative 'fuel'
+require_relative 'life'
 
-class SectorFive < Gosu::Window
+# noinspection RubyTooManyInstanceVariablesInspection,RubyResolve
+class SectorFiveSimple < Gosu::Window
   WIDTH = 1920
   HEIGHT = 1080
   ENEMY_FREQUENCY = 0.08
   FUEL_FREQUENCY = 0.0015
   LIFE_FREQUENCY = 0.0003
+  # noinspection RubyUnusedLocalVariable
   red_screen = Gosu::Color::RED
 
   def initialize
@@ -24,7 +26,7 @@ class SectorFive < Gosu::Window
     @background = Gosu::Image.new('SPRITES/bg2.png', tileable: true)
     @score = 0
     @lives = 3
-    @game_music = Gosu::Song.new('background-music.mp3')
+    @game_music = Gosu::Song.new('MUSIC/background-music.mp3')
     @game_music.play(true)
     @rs_display = false
     @red_screen = Gosu::Color::RED
@@ -32,7 +34,9 @@ class SectorFive < Gosu::Window
     @lives1 = Gosu::Image.new('SPRITES/lives1.png', tileable: true)
     @lives2 = Gosu::Image.new('SPRITES/lives2.png', tileable: true)
     @lives3 = Gosu::Image.new('SPRITES/lives3.png', tileable: true)
+    # noinspection RubyArgCount
     @font = Gosu::Font.new(100)
+    # noinspection RubyArgCount
     @font_lost = Gosu::Font.new(200)
     @fuels = []
     @lives_collectable = []
@@ -63,10 +67,10 @@ class SectorFive < Gosu::Window
     @lives_collectable.push Life.new(self) if rand < LIFE_FREQUENCY
 
     # Moves enemies, bullets, life and fuel
-    @enemies.each {|enemy| enemy.move}
-    @bullets.each {|bullet| bullet.move}
-    @fuels.each {|fuel| fuel.move}
-    @lives_collectable.each {|life| life.move}
+    @enemies.each(&:move)
+    @bullets.each(&:move)
+    @fuels.each(&:move)
+    @lives_collectable.each(&:move)
 
     # Checking if enemies have been hit by the bullet
     @enemies.dup.each do |enemy|
@@ -113,7 +117,7 @@ class SectorFive < Gosu::Window
 
     # Ends explosion effect
     @explosions.dup.each do |explosion|
-      @explosions.delete explosion if explosion.getfinished()
+      @explosions.delete explosion if explosion.getfinished
     end
 
     # Removing either destroyed enemies or collided enemies
@@ -130,9 +134,7 @@ class SectorFive < Gosu::Window
 
     # Speeds up enemies after a while
     if @game_timer % 930 == 0
-      @enemies.each do |enemy|
-        enemy.speed_up
-      end
+      @enemies.each(&:speed_up)
       @game_timer = 0
     end
   end
@@ -154,10 +156,10 @@ class SectorFive < Gosu::Window
     # Display player, background, enemies bullets, explosions, fuels
     @player.draw
     @background.draw(0, 0, -1)
-    @enemies.each {|enemy| enemy.draw}
-    @bullets.each {|bullet| bullet.draw}
-    @explosions.each {|explosion| explosion.draw}
-    @fuels.each {|fuel| fuel.draw}
+    @enemies.each(&:draw)
+    @bullets.each(&:draw)
+    @explosions.each(&:draw)
+    @fuels.each(&:draw)
 
     # Fuel bar display
     draw_quad(20, 1000, @black_colour, 220, 1000, @black_colour, 20, 1025, @black_colour, 220, 1025, @black_colour)
@@ -175,5 +177,5 @@ class SectorFive < Gosu::Window
 end
 
 # Run
-wind = SectorFive.new
+wind = SectorFiveSimple.new
 wind.show
