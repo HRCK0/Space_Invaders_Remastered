@@ -84,34 +84,24 @@ class SectorFive < Gosu::Window
   def draw_start
     @background_image.draw(0,0,0)
   end
-#=begin
-  def draw_end
-    @end_background.draw(0,0,0)
-    @font.draw(@score, 960, 480, 2)
-    if @file_highest_score.to_i < @score
-      @file_highest_score = @score
-    end
-    @font.draw("High Score:  #{@file_highest_score}", 460, 620, 2)
-  end
-#=end
-=begin
+
   def draw_end
     @end_background.draw(0,0,0)
     @font.draw(@score, 960, 480, 2)
 
     read_high_score = open('record.txt').read
-    file_highest_score = File.new('record.txt', 'w+')
 
     if read_high_score.to_i < @score
-      # file_highest_score = @score.to_s
-      @font.draw("New High Score:  #{@score}", 360, 620, 2)
-      #File.write(@score)
+      @font.draw("NEW HIGH SCORE:  #{@score}", 300, 620, 2)
+      File.open('record.txt', 'w+') do |file|
+        file.write(@score)
+        file.close
+      end
     else
-      @font.draw("High Score:  #{file_highest_score.sysread(15)}", 460, 620, 2)
+      @font.draw("High Score:  #{read_high_score}", 460, 620, 2)
     end
-    file_highest_score.close
   end
-=end
+
 
   def update
     case @scene
@@ -189,7 +179,7 @@ class SectorFive < Gosu::Window
     @fuels.each {|fuel| fuel.move}
     @nukes.each {|nuke| nuke.move}
 
-    # Checking if enemies have b  een hit by the bullet
+    # Checking if enemies have been hit by the bullet
     @enemies.dup.each do |enemy|
       @bullets.dup.each do |bullet|
         distance = Gosu::distance(enemy.x, enemy.y  ,  bullet.x, bullet.y)
@@ -233,11 +223,13 @@ class SectorFive < Gosu::Window
       end
     end
 
-     @nukes.dup.each do |nuke|
+      #Checks if the player collected the fuel
+      @nukes.dup.each do |nuke|
         distance = Gosu::distance(@player.x, @player.y, nuke.x, nuke.y)
         if distance < nuke.radius + @player.radius
           @nukes.delete nuke
           @nuke_sound.play
+          @score += 5000
           @enemies.dup.each do |enemy|
             @explosions.push Explosion.new(self, enemy.x, enemy.y)
             @enemies.delete enemy
