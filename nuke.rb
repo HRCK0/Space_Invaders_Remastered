@@ -2,7 +2,7 @@ class Nuke
   SPEED = 5
   attr_reader :x, :y, :radius
   def initialize(window)
-    @radius = 40
+    @radius = 60
     @x = rand(window.width - 2*@radius)+@radius
     @y = 0
   end

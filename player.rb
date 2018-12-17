@@ -13,6 +13,32 @@ class Player
     @radius = 35
     @window = window
     @fuel = 100
+    @lives = 4
+    @nuke_collected = false
+  end
+
+  def get_nuke_status
+    @nuke_collected
+  end
+
+  def set_nuke_false
+    @nuke_collected = false
+  end
+
+  def set_nuke_true
+    @nuke_collected = true
+  end
+
+  def decrease_life
+    @lives -= 1
+  end
+
+  def increase_life
+    @lives += 1
+  end
+
+  def get_lives
+    @lives
   end
 
   def decrease_fuel

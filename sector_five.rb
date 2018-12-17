@@ -3,7 +3,7 @@ require_relative 'player'
 require_relative 'enemy'
 require_relative 'bullet'
 require_relative 'explosion'
-require_relative 'credit'
+#require_relative 'credit'
 require_relative 'fuel'
 
 class SectorFive < Gosu::Window

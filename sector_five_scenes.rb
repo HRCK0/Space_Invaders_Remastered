@@ -17,9 +17,7 @@ class SectorFive < Gosu::Window
   @@bulb_counter_red = 50
   @@blue_bulb_change = true
   @@red_bulb_change = true
-  @@nuke_collected = false
-  red_screen = Gosu::Color::RED
-  #game_timer = 0
+  @@moving_background = 0
 
   def initialize
     super(WIDTH, HEIGHT)
@@ -39,9 +37,8 @@ class SectorFive < Gosu::Window
     @explosions = []
     @nukes = []
     @scene = :game
-    @background = Gosu::Image.new('SPRITES/bg2.png', tileable: true)
+    @background = Gosu::Image.new('SPRITES/bg3_long.png', tileable: true)
     @score = 0
-    @lives = 3
     @rs_display = false
     @red_screen = Gosu::Color::RED
     @black_colour = Gosu::Color::BLACK
@@ -109,7 +106,6 @@ class SectorFive < Gosu::Window
     read_high_score = open('record.txt').read
 
     if read_high_score.to_i < @score
-      @font.draw("NEW HIGH SCORE:  #{@score}", 300, 620, 2)
       File.open('record.txt', 'w+') do |file|
         file.write(@score)
         file.close
@@ -143,15 +139,24 @@ class SectorFive < Gosu::Window
   end
 
   def button_down_game(id)
-    if id == Gosu::KbSpace and @@nuke_collected
-      @@nuke_collected = false
+
+    # Activate the Nuke
+    if id == Gosu::KbSpace and @player.get_nuke_status
+      @player.set_nuke_false
       @nuke_sound.play
-      @score += 5000
       @enemies.dup.each do |enemy|
         @explosions.push Explosion.new(self, enemy.x, enemy.y)
+		@score += 300
         @enemies.delete enemy
       end
     end
+
+    ########Cheats########
+    @player.increase_life if id == Gosu::KbF5 and @player.get_lives < 10
+    @player.reset_fuel if id == Gosu::KbF6
+    if id == Gosu::KbF7 then @player.set_nuke_true end
+    ######################
+
   end
 
   def  button_down_end(id)
@@ -167,10 +172,13 @@ class SectorFive < Gosu::Window
   end
 
   def update_game
-
+    @@moving_background += 1
+    if @@moving_background >= 1080
+      @@moving_background = 0
+    end
 
     # Checks if end-game conditions have been met
-    if @lives == 0 or @player.get_fuel <= 0
+    if @player.get_lives == 0 or @player.get_fuel <= 0
        initialize_end
     end
 
@@ -234,7 +242,7 @@ class SectorFive < Gosu::Window
         @enemies.delete enemy
         @explosions.push Explosion.new(self, enemy.x, enemy.y)
         @rs_display = true
-        @lives -= 1
+        @player.decrease_life
         @score += 500
         @death_sound.play
       end
@@ -245,6 +253,7 @@ class SectorFive < Gosu::Window
       distance = Gosu::distance(@player.x, @player.y, fuel.x, fuel.y)
       if distance < fuel.radius + @player.radius
         @player.reset_fuel
+        #@@bullet_frequency -= 1 if @@bullet_frequency > 1
         @fuels.delete fuel
       end
     end
@@ -253,14 +262,14 @@ class SectorFive < Gosu::Window
       @nukes.dup.each do |nuke|
         distance = Gosu::distance(@player.x, @player.y, nuke.x, nuke.y)
         if distance < nuke.radius + @player.radius
-          @@nuke_collected = true
+          @player.set_nuke_true
           @nukes.delete nuke
         end
       end
 
     # Ends explosion effect
     @explosions.dup.each do |explosion|
-      @explosions.delete explosion if explosion.getfinished()
+      @explosions.delete explosion if explosion.getfinished
     end
 
     # Removing either destroyed enemies or collided enemies
@@ -276,7 +285,7 @@ class SectorFive < Gosu::Window
     end
 
     # Level updater
-    if @game_timer % (510) == 0
+    if @game_timer % 540 == 0
       @enemies.each do |enemy|
         enemy.speed_up(@level)
       end
@@ -286,8 +295,8 @@ class SectorFive < Gosu::Window
         enemy.reset_speed
         @count = 0
         @level += 1
-        if @lives < 10
-          @lives += 1
+        if @player.get_lives < 10
+          @player.increase_life
           @life_sound.play
         end
       end
@@ -301,7 +310,9 @@ class SectorFive < Gosu::Window
 
     # Display player, background, enemies bullets, explosions, fuels
     @player.draw
-    @background.draw(0, 0, -1)
+    #@background.draw(0, (@@moving_background*@level)-1080, -1)
+    @background.draw(0, @@moving_background-1080, -1)
+
     @enemies.each {|enemy| enemy.draw}
     @bullets.each {|bullet| bullet.draw}
     @explosions.each {|explosion| explosion.draw}
@@ -311,7 +322,7 @@ class SectorFive < Gosu::Window
     #UI
     #Draws Nuke on Hub if collected
     @hub.draw(20, 950, 3)
-    if @@nuke_collected
+    if @player.get_nuke_status
       if @game_timer % 5 == 0
         @hub_nuke1.draw(20, 950, 3)
       else
@@ -325,12 +336,12 @@ class SectorFive < Gosu::Window
     @hub_red_end.draw(322, 955, 3)
 
     #Low HP bulb notification
-    if @lives <= 2 && @@bulb_counter_red > 0 && @@red_bulb_change
+    if @player.get_lives <= 2 && @@bulb_counter_red > 0 && @@red_bulb_change
       @glowing_bulb.draw(322, 944, 3)
       @@bulb_counter_red -= 1
     else
       @hub_red_end.draw(322, 955, 3)
-      @@bulb_counter_red += 1 if @lives <= 2
+      @@bulb_counter_red += 1 if @player.get_lives <= 2
       @@red_bulb_change = false
       @@red_bulb_change = true if @@bulb_counter_red == 50
     end
@@ -347,7 +358,7 @@ class SectorFive < Gosu::Window
     end
 
     #Draws appropriate number of bars for HP and Fuel
-    for i in 0..@lives-1
+    for i in 0..@player.get_lives-1
       @red_bar.draw(173 + 15*i, 958, 3)
     end
 
@@ -357,7 +368,7 @@ class SectorFive < Gosu::Window
 
 
     # Red splash screen upon player getting hit
-    if @rs_display and @lives != 0
+    if @rs_display and @player.get_lives != 0
       draw_quad(0, 0, @red_screen, 1920, 0, @red_screen, 1920, 1080, @red_screen, 0, 1080, @red_screen)
     end
       @rs_display = false
