@@ -27,6 +27,10 @@ class Enemy
     @health -= 1
   end
 
+  def decrease_hp_by(bullet_strength)
+    @health -= bullet_strength
+  end
+
   def get_health
     @health
   end

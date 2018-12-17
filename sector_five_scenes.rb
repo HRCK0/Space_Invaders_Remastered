@@ -5,6 +5,7 @@ require_relative 'bullet'
 require_relative 'explosion'
 require_relative 'fuel'
 require_relative 'nuke'
+require_relative 'power_up'
 
 class SectorFive < Gosu::Window
   WIDTH = 1920
@@ -12,6 +13,7 @@ class SectorFive < Gosu::Window
   ENEMY_FREQUENCY = 0.08
   FUEL_FREQUENCY = 0.002
   NUKE_FREQUENCY = 0.0008
+  POWER_UP_FREQUENCY = 0.008
   @@bullet_frequency = 10
   @@bulb_counter_blue = 50
   @@bulb_counter_red = 50
@@ -59,6 +61,7 @@ class SectorFive < Gosu::Window
 
     @font = Gosu::Font.new(100)
     @fuels = []
+    @power_ups = []
     @game_timer = 1
     @file_highest_score= open('record.txt').read
 
@@ -201,8 +204,6 @@ class SectorFive < Gosu::Window
 
     # Adds enemies and fuels
     @enemies.push Enemy.new(self, @level) if rand < ENEMY_FREQUENCY
-
-
     @fuels.push Fuel.new(self) if rand < FUEL_FREQUENCY
     @nukes.push Nuke.new(self) if rand < NUKE_FREQUENCY
     # @fuels.push Fuel.new(self) if @player.get_fuel == 10
@@ -212,6 +213,7 @@ class SectorFive < Gosu::Window
     @bullets.each {|bullet| bullet.move}
     @fuels.each {|fuel| fuel.move}
     @nukes.each {|nuke| nuke.move}
+    @power_ups.each {|power_up| power_up.move}
 
     # Checking if enemies have been hit by the bullet
     @enemies.dup.each do |enemy|
@@ -219,16 +221,17 @@ class SectorFive < Gosu::Window
         distance = Gosu::distance(enemy.x, enemy.y  ,  bullet.x, bullet.y)
         if distance < enemy.radius + bullet.radius
           @bullets.delete bullet
-          enemy.decrease_hp
-          if enemy.get_health == 0
+          enemy.decrease_hp_by(@player.get_bullet_strength)
+          if enemy.get_health <= 0
             @explosion_sound.play
             @explosions.push Explosion.new(self, enemy.x, enemy.y)
+            @power_ups.push Power_Up.new(enemy.x, enemy.y) if rand < POWER_UP_FREQUENCY
             @enemies.delete enemy
             if enemy.get_pt == 3
             @score += 1000
             elsif enemy.get_pt==2
               @score+= 600
-              elsif enemy.get_pt == 1
+            elsif enemy.get_pt == 1
               @score+= 300
           end
         end
@@ -258,6 +261,17 @@ class SectorFive < Gosu::Window
       end
     end
 
+
+    # Checks if the player collected the power up EXPERIMENTAL
+    @power_ups.dup.each do |power_up|
+      distance = Gosu::distance(@player.x, @player.y, power_up.x, power_up.y)
+      if distance < power_up.radius + @player.radius
+        @player.increase_bullet_strength
+        #@@bullet_frequency -= 1 if @@bullet_frequency > 1
+        @power_ups.delete power_up
+      end
+    end
+
       #Checks if the player collected the nuke
       @nukes.dup.each do |nuke|
         distance = Gosu::distance(@player.x, @player.y, nuke.x, nuke.y)
@@ -278,6 +292,14 @@ class SectorFive < Gosu::Window
         @enemies.delete enemy
       end
     end
+
+    # Removing power ups that left the screen EXPERIMENTAL
+    @power_ups.dup.each do |power_up|
+      if power_up.y > HEIGHT + power_up.radius
+        @power_ups.delete power_up
+      end
+    end
+
 
     # removes bullets that exit the screen or hit an enemy
     @bullets.dup.each do |bullet|
@@ -318,6 +340,7 @@ class SectorFive < Gosu::Window
     @explosions.each {|explosion| explosion.draw}
     @fuels.each {|fuel| fuel.draw}
     @nukes.each {|nuke| nuke.draw}
+    @power_ups.each {|power_up| power_up.draw}
 
     #UI
     #Draws Nuke on Hub if collected

@@ -15,6 +15,15 @@ class Player
     @fuel = 100
     @lives = 4
     @nuke_collected = false
+    @bullet_strength = 1
+  end
+
+  def get_bullet_strength
+    @bullet_strength
+  end
+
+  def increase_bullet_strength
+    @bullet_strength += 1
   end
 
   def get_nuke_status
@@ -31,6 +40,11 @@ class Player
 
   def decrease_life
     @lives -= 1
+    if @bullet_strength > 2
+      @bullet_strength -= 2
+    elsif @bullet_strength > 1
+      @bullet_strength -= 1
+    end
   end
 
   def increase_life
