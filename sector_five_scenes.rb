@@ -272,7 +272,7 @@ class SectorFive < Gosu::Window
       end
     end
 
-      #Checks if the player collected the nuke
+      #Checks if the player collected a nuke
       @nukes.dup.each do |nuke|
         distance = Gosu::distance(@player.x, @player.y, nuke.x, nuke.y)
         if distance < nuke.radius + @player.radius
